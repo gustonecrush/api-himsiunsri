@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('proker_dinas', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->foreignId('dinas_id')->references('id')->on('dinas');
+            $table->text('description');
             $table->timestamps();
         });
     }

@@ -15,4 +15,9 @@ class Dinas extends Model
     protected $guarded = [ 'id' ];
     protected $hidden;
     protected $softDelete = true;
+
+    public function prokerDinas()
+    {
+        return $this->hasMany(ProkerDinas::class, 'dinas_id');
+    }
 }

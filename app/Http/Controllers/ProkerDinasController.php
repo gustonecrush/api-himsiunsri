@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProkerDinasRequest;
+use App\Http\Resources\ProkerDinasResource;
+use App\Http\Resources\ProkerResource;
 use App\Models\ProkerDinas;
 use Illuminate\Http\Request;
 
 class ProkerDinasController extends Controller
 {
+
+    protected $prokerDinas;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +20,9 @@ class ProkerDinasController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $this->prokerDinas = ProkerDinas::all();
+        $prokerDinasResource = ProkerDinasResource::collection($this->prokerDinas);
+        return $this->sendResponse($prokerDinasResource, "Successfully Get Proker Dinas!");
     }
 
     /**
@@ -33,53 +31,32 @@ class ProkerDinasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProkerDinasRequest $request)
     {
-        //
+        $prokerDinas = new ProkerDinas();
+        $prokerDinas->name = $request->name;
+        $prokerDinas->dinas_id = $request->dinas_id;
+        $prokerDinas->description = $request->description;
+        $prokerDinas->save();
+
+        return $this->sendResponse(new ProkerDinasResource($prokerDinas), "Successfully Post Proker Dinas!");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ProkerDinas  $prokerDinas
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ProkerDinas $prokerDinas)
+    public function update(ProkerDinasRequest $request, $id)
     {
-        //
+        $prokerDinas = ProkerDinas::find($id);
+        $prokerDinas->name = $request->name;
+        $prokerDinas->dinas_id = $request->dinas_id;
+        $prokerDinas->description = $request->description;
+        $prokerDinas->save();
+
+        return $this->sendResponse(new ProkerDinasResource($prokerDinas), "Successfully Update Proker Dinas!");
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ProkerDinas  $prokerDinas
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ProkerDinas $prokerDinas)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProkerDinas  $prokerDinas
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ProkerDinas $prokerDinas)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ProkerDinas  $prokerDinas
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProkerDinas $prokerDinas)
-    {
-        //
+        $prokerDinas = ProkerDinas::find($id);
+        $prokerDinas->delete();
+        return $this->sendResponse(new ProkerDinasResource($prokerDinas), "Successfully Delete Proker Dinas!");
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProkerDinasRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class ProkerDinasRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,21 @@ class ProkerDinasRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-        ];
+                "name" => "required|string",
+                "dinas_id" => "required",
+                "description" => "required",
+            ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => 'Validation Error',
+                'error' => $validator->errors(),
+            ])
+        );
     }
 }
