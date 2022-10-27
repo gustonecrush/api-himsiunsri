@@ -20,6 +20,7 @@ class DinasResource extends JsonResource
             "slug" => $this->slug,
             "thumbnail" => $this->thumbnail,
             "prokers" => ProkerDinasResource::collection($this->prokerDinas),
+            "divisi" => DivisiResource::collection($this->divisi),
             "singkatan" => $this->singkatan,
             "description" => $this->description,
         ];

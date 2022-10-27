@@ -14,6 +14,10 @@ class DivisiResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "name" => $this->name,
+            "dinas" => $this->dinas->name,
+            "description" => $this->description,
+        ];
     }
 }

@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Divisi extends Model
 {
     use HasFactory;
+
+    protected $guarded = [ "id" ];
+    
+    public function dinas()
+    {
+        return $this->belongsTo(Dinas::class);
+    }
+    
 }

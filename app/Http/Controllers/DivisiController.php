@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DivisiRequest;
+use App\Http\Resources\DivisiResource;
 use App\Models\Divisi;
 use Illuminate\Http\Request;
 
 class DivisiController extends Controller
 {
+
+    protected $divisi;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +19,9 @@ class DivisiController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $this->divisi = Divisi::all();
+        $divisiResource = DivisiResource::collection($this->divisi);
+        return $this->sendResponse($divisiResource, "Successfully Get Divisi!");
     }
 
     /**
@@ -33,9 +30,15 @@ class DivisiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DivisiRequest $request)
     {
-        //
+        $divisi = new Divisi();
+        $divisi->name = $request->name;
+        $divisi->dinas_id = $request->dinas_id;
+        $divisi->description = $request->description;
+        $divisi->save();
+
+        return $this->sendResponse(new DivisiResource($divisi), "Successfully Post Divisi!");
     }
 
     /**
@@ -50,17 +53,6 @@ class DivisiController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Divisi  $divisi
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Divisi $divisi)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -69,7 +61,13 @@ class DivisiController extends Controller
      */
     public function update(Request $request, Divisi $divisi)
     {
-        //
+        $divisi = Divisi::find($divisi->id);
+        $divisi->name = $request->name;
+        $divisi->dinas_id = $request->dinas_id;
+        $divisi->description = $request->description;
+        $divisi->save();
+
+        return $this->sendResponse(new DivisiResource($divisi), "Successfully Update Divisi!");
     }
 
     /**
@@ -80,6 +78,8 @@ class DivisiController extends Controller
      */
     public function destroy(Divisi $divisi)
     {
-        //
+        $divisi = Divisi::find($divisi->id);
+        $divisi->delete();
+        return $this->sendResponse(new DivisiResource($divisi), "Successfully Delete Divisi!");
     }
 }

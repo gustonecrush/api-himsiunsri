@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DinasController;
+use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\ProkerController;
@@ -28,6 +29,7 @@ Route::resource('feedbacks', FeedbackController::class, ['only' => ['index', 'st
 Route::resource('prokers', ProkerController::class, ['except' => ['show', 'destroy', 'create']]);
 Route::resource('dinas', DinasController::class, ['except' => ['show', 'destroy', 'update', 'create']]);
 Route::resource('proker-dinas', ProkerDinasController::class, ['except' => ['show', 'create']]);
+Route::resource('divisi', DivisiController::class, ['except' => ['create']]);
 
 Route::get('dinas/{dinas:slug}', [DinasController::class, 'findBySlug']);
 Route::delete('dinas/{dinas:slug}', [DinasController::class, 'destroyBySlug']);

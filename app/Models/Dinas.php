@@ -20,4 +20,9 @@ class Dinas extends Model
     {
         return $this->hasMany(ProkerDinas::class, 'dinas_id');
     }
+
+    public function divisi() 
+    {
+        return $this->hasMany(Divisi::class, 'dinas_id');
+    }
 }
