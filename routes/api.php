@@ -6,6 +6,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\ProkerController;
 use App\Http\Controllers\ProkerDinasController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,8 +29,12 @@ Route::resource('layanans', LayananController::class, ['except' => ['show', 'des
 Route::resource('feedbacks', FeedbackController::class, ['only' => ['index', 'store', 'create']]);
 Route::resource('prokers', ProkerController::class, ['except' => ['show', 'destroy', 'create']]);
 Route::resource('dinas', DinasController::class, ['except' => ['show', 'destroy', 'update', 'create']]);
-Route::resource('proker-dinas', ProkerDinasController::class, ['except' => ['show', 'create']]);
-Route::resource('divisi', DivisiController::class, ['except' => ['create']]);
+Route::resource('proker-dinas', ProkerDinasController::class, ['except' => ['show', 'create',]]);
+Route::resource('divisi', DivisiController::class, ['except' => ['create',]]);
+
+Route::resource('staffs', StaffController::class, ['except' => ['create', 'show', 'update']]);
+Route::get('staffs/{staffs:slug}', [StaffController::class, 'find']);
+Route::put('staffs/{staffs:slug}', [StaffController::class, 'updateBySlug']);
 
 Route::get('dinas/{dinas:slug}', [DinasController::class, 'findBySlug']);
 Route::delete('dinas/{dinas:slug}', [DinasController::class, 'destroyBySlug']);

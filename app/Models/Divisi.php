@@ -15,5 +15,10 @@ class Divisi extends Model
     {
         return $this->belongsTo(Dinas::class);
     }
-    
+
+    public function staffs()
+    {
+        return $this->hasMany(Staff::class);
+    }
+
 }

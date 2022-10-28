@@ -25,4 +25,9 @@ class Dinas extends Model
     {
         return $this->hasMany(Divisi::class, 'dinas_id');
     }
+
+    public function staffs()
+    {
+        return $this->hasMany(Staff::class, 'dinas_id');
+    }
 }

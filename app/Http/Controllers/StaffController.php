@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StaffRequest;
+use App\Http\Resources\StaffResource;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
 {
+
+    protected $staffs;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,17 +19,16 @@ class StaffController extends Controller
      */
     public function index()
     {
-        //
+        $this->staffs = Staff::all();
+        $staffResource = StaffResource::collection($this->staffs);
+        return $this->sendResponse($staffResource, "Successfully Get Staffs!");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function find($slug)
     {
-        //
+        $staff = Staff::where('slug', '=', $slug)->get();
+        $staffResource = StaffResource::collection($staff);
+        return $this->sendResponse($staffResource, "Successfully Get Staff!");
     }
 
     /**
@@ -33,31 +37,29 @@ class StaffController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StaffRequest $request)
     {
-        //
-    }
+        $staff = new Staff();
+        $staff->name = $request->name;
+        $staff->nim = $request->nim;
+        $staff->password = bcrypt($request->nim);
+        $staff->slug = $this->slug($request->name);
+        $staff->dinas_id = $request->dinas_id;
+        $staff->divisi_id = $request->divisi_id;
+        $staff->ttl = $request->ttl;
+        $staff->gender = $request->gender;
+        $staff->alamat = $request->alamat;
+        $staff->angkatan = $request->angkatan;
+        $staff->jabatan = $request->jabatan;
+        $staff->hobi = $request->hobi;
+        $staff->email = $request->email;
+        $staff->instagram = $request->instagram;
+        $staff->periode = $request->periode;
+        $staff->kesan_pesan = $request->kesan_pesan;
+        $staff->picture = $request->picture;
+        $staff->save();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Staff $staff)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Staff  $staff
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Staff $staff)
-    {
-        //
+        return $this->sendResponse(new StaffResource($staff), "Successfully Post Staff!");
     }
 
     /**
@@ -67,9 +69,29 @@ class StaffController extends Controller
      * @param  \App\Models\Staff  $staff
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Staff $staff)
+    public function updateBySlug(StaffRequest $request, $slug)
     {
-        //
+        $staff = Staff::where('slug', '=', $slug)->first();
+        $staff->name = $request->name;
+        $staff->nim = $request->nim;
+        $staff->password = bcrypt($request->nim);
+        $staff->slug = $this->slug($request->name);
+        $staff->dinas_id = $request->dinas_id;
+        $staff->divisi_id = $request->divisi_id;
+        $staff->ttl = $request->ttl;
+        $staff->gender = $request->gender;
+        $staff->alamat = $request->alamat;
+        $staff->angkatan = $request->angkatan;
+        $staff->jabatan = $request->jabatan;
+        $staff->hobi = $request->hobi;
+        $staff->email = $request->email;
+        $staff->instagram = $request->instagram;
+        $staff->periode = $request->periode;
+        $staff->kesan_pesan = $request->kesan_pesan;
+        $staff->picture = $request->picture;
+        $staff->save();
+
+        return $this->sendResponse(new StaffResource($staff), "Successfully Update Staff!");
     }
 
     /**
@@ -80,6 +102,8 @@ class StaffController extends Controller
      */
     public function destroy(Staff $staff)
     {
-        //
+        $staff = Staff::where('id', '=', $staff->id)->first();
+        $staff->delete();
+        return $this->sendResponse(new StaffResource($staff), "Successfully Delete Staff!");
     }
 }
