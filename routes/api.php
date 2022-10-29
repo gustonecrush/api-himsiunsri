@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\DinasController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\FeedbackController;
@@ -45,6 +46,9 @@ Route::resource('divisi', DivisiController::class, ['except' => ['create']]);
 Route::resource('pojok-himsi', PojokHimsiController::class, [
     'except' => ['destroy', 'show', 'update', 'edit', 'create'],
 ]);
+Route::resource('akademik', AkademikController::class, [
+    'except' => ['create', 'show', 'edit', 'update', 'destroy'],
+]);
 
 Route::resource('staffs', StaffController::class, [
     'except' => ['create', 'show', 'update'],
@@ -72,13 +76,24 @@ Route::delete('pojok-himsi/{pojok_himsi:slug}', [
     PojokHimsiController::class,
     'destroyBySlug',
 ]);
-
 Route::get('pojok-himsi/{pojok_himsi:slug}', [
     PojokHimsiController::class,
     'findBySlug',
 ]);
-
 Route::put('pojok-himsi/{pojok_himsi:slug}', [
     PojokHimsiController::class,
+    'updateBySlug',
+]);
+
+Route::delete('akademik/{akademik:slug}', [
+    AkademikController::class,
+    'destroyBySlug',
+]);
+Route::get('akademik/{akademik:slug}', [
+    AkademikController::class,
+    'findBySlug',
+]);
+Route::put('akademik/{akademik:slug}', [
+    AkademikController::class,
     'updateBySlug',
 ]);

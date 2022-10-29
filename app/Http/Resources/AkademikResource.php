@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PojokHimsiResource extends JsonResource
+class AkademikResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,8 +19,8 @@ class PojokHimsiResource extends JsonResource
             'slug' => $this->slug,
             'author' => $this->author,
             'content' => $this->content,
-            'periode' => $this->periode,
-            'cover' => $this->cover,
+            'category' => $this->category,
+            'thumbnail' => $this->thumbnail,
             'published_at' => $this->created_at,
         ];
     }
